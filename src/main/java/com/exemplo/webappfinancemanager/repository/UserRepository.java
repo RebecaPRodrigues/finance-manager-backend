@@ -1,0 +1,8 @@
+package com.exemplo.webappfinancemanager.repository;
+
+import com.exemplo.webappfinancemanager.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
+}
