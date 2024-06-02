@@ -18,7 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
-
+    
+    String[] PUBLIC_ENDPOINTS = {"/h2-console/**", "/auth"};
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return  httpSecurity
@@ -26,10 +28,12 @@ public class SecurityConfigurations {
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                		.requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                		.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                		// users
+                		.requestMatchers(HttpMethod.POST, "/users").permitAll()
+                		.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                        /// transactions
+                		.requestMatchers("/transactions").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
