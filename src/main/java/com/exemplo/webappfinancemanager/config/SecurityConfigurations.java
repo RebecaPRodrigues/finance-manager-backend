@@ -19,11 +19,13 @@ public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
     
-    String[] PUBLIC_ENDPOINTS = {"/auth"};
+    String[] PUBLIC_ENDPOINTS = {"/auth", "/", "/h2-console/**"};
+
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return  httpSecurity
+        		.cors().and()
                 .csrf(csrf -> csrf.disable())
 //                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
