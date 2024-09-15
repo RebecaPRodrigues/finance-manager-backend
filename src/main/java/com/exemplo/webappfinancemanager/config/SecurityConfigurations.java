@@ -19,13 +19,13 @@ public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
     
-    String[] PUBLIC_ENDPOINTS = {"/h2-console/**", "/auth"};
+    String[] PUBLIC_ENDPOINTS = {"/auth"};
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return  httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+//                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                 		.requestMatchers(PUBLIC_ENDPOINTS).permitAll()

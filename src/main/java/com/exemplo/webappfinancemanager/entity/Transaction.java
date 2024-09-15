@@ -2,7 +2,12 @@ package com.exemplo.webappfinancemanager.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +30,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Transaction {
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+	    name = "UUID",
+	    strategy = "org.hibernate.id.UUIDGenerator"
+	)
+	@Column(updatable = false, nullable = false)
     private String id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    
     private TransactionType type;
     private Double amount;
     private String transactionWith;
@@ -39,39 +50,42 @@ public class Transaction {
     private LocalDate date;
     private TransactionCategory category;
     private String paymentMethod;
-    
-    
-    
-	public void setId(String id) {
-		this.id = id;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
-	public void setType(TransactionType type) {
-		this.type = type;
-	}
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-	public void setTransactionWith(String transactionWith) {
-		this.transactionWith = transactionWith;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	public void setCategory(TransactionCategory category) {
-		this.category = category;
-	}
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-    
-	
-    
- 
-    
+
+    // Setters for each field
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public void setTransactionWith(String transactionWith) {
+        this.transactionWith = transactionWith;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setCategory(TransactionCategory category) {
+        this.category = category;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
 }

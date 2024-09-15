@@ -28,19 +28,26 @@ public class UserService {
 	}
 
 	public ViewUserDTO save(RegisterUserDTO data) {
-		// TODO Auto-generated method stub
+		// Verifique se o campo username está preenchido
+		if (data.username() == null || data.username().isEmpty()) {
+		    throw new IllegalArgumentException("Username não pode ser nulo ou vazio.");
+		}
 
+		// Encriptando a senha
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+		
+		// Criando o novo usuário
 		User newUser = new User(data.username(), encryptedPassword, data.email(), data.role());
 	
-		
+		// Salvando o usuário no repositório
 		repository.save(newUser);
 		
+		// Convertendo a entidade para DTO e retornando
 		return parseToDTO(newUser);
 	}
 	
 	private ViewUserDTO parseToDTO(User user) {
-		return new ViewUserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getImageUrl(), user.isAdmin());
+	    return new ViewUserDTO(user.getId(), user.getUsername(), user.getEmail(), user.getImageUrl(), user.isAdmin());
 	}
-
 }
+
