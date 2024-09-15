@@ -19,7 +19,14 @@ public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
     
-    String[] PUBLIC_ENDPOINTS = {"/auth", "/", "/h2-console/**"};
+    String[] PUBLIC_ENDPOINTS = {
+            "/auth", 
+            "/", 
+            "/h2-console/**", 
+            "/v3/api-docs/**",  
+            "/swagger-ui/**",   
+            "/swagger-ui.html"  // Página principal do Swagger
+        };
 
     
     @Bean
@@ -27,9 +34,9 @@ public class SecurityConfigurations {
         return  httpSecurity
         		.cors().and()
                 .csrf(csrf -> csrf.disable())
-//                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                		.requestMatchers("/auth").permitAll()
                 		.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                 		// users
                 		.requestMatchers(HttpMethod.POST, "/users").permitAll()
