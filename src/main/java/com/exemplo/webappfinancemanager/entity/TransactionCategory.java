@@ -13,14 +13,14 @@ public enum TransactionCategory {
     SAUDE,
     OUTROS;
 
-    @JsonCreator
-    public static TransactionCategory fromValue(String value) {
-        try {
-            return TransactionCategory.valueOf(value.toUpperCase());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Categoria inválida: " + value);
-        }
-    }
+	@JsonCreator
+	public static TransactionCategory fromValue(String value) {
+	    try {
+	        return TransactionCategory.valueOf(value.trim().toUpperCase());
+	    } catch (Exception e) {
+	        throw new IllegalArgumentException("Categoria inválida: " + value);
+	    }
+	}
 
     @JsonValue
     public String toValue() {
