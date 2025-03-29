@@ -30,10 +30,18 @@ public class AuthenticationController {
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
+        
+        var user = (User) auth.getPrincipal();
         var token = tokenService.generateToken((User) auth.getPrincipal());
+        
+        var response = new LoginResponseDTO(
+        	    user.getId(),
+        	    user.getEmail(),
+        	    user.isAdmin() ? "ADMIN" : "USER",
+        	    token
+        	);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(response);
     }
 
 }
