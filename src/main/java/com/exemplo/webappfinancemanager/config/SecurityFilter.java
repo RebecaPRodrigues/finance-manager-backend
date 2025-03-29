@@ -41,8 +41,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/auth") || path.startsWith("/h2-console");
+        String method = request.getMethod();
+
+        System.out.println("shouldNotFilter PATH = " + path + " | METHOD = " + method);
+
+        boolean shouldSkip = path.equals("/auth")
+            || path.startsWith("/h2-console")
+            || (path.equals("/users") && method.equals("POST"));
+
+        System.out.println("shouldSkip? " + shouldSkip);
+
+        return shouldSkip;
     }
+
 
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");

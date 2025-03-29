@@ -48,12 +48,21 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
 
-    public User(String login, String password, String email, UserRole role){
+//    public User(String login, String password, String email, UserRole role){
+//        this.userName = login;
+//        this.password = password;
+//        this.email = email;
+//        this.role = role;
+//    }
+    
+    public User(String login, String password, String email, UserRole role, String imageUrl){
         this.userName = login;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.imageUrl = imageUrl;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

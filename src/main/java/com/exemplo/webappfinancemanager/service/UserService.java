@@ -34,7 +34,7 @@ public class UserService {
 
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 		
-		User newUser = new User(data.username(), encryptedPassword, data.email(), data.role());
+		User newUser = new User(data.username(), encryptedPassword, data.email(), data.role(), data.imageUrl());
 	
 		repository.save(newUser);
 		
