@@ -38,7 +38,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> createTransaction(@RequestBody RegisterTransactionDTO transaction) {
     	ViewTransactionDTO savedTransaction = service.save(transaction);
         return ResponseEntity.ok(savedTransaction);
