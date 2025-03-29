@@ -15,7 +15,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                     .allowedOrigins("https://projeto-financas-unifor.vercel.app", "http://localhost:4200")  // Adicionando o localhost e o Vercel
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
+                    .allowedHeaders("Authorization", "Content-Type", "X-Requested-With")
                     .allowCredentials(true);
             }
         };
