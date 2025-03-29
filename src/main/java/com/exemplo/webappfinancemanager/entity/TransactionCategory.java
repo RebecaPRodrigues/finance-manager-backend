@@ -1,5 +1,7 @@
 package com.exemplo.webappfinancemanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum TransactionCategory {
     SALARIO,
     ALIMENTACAO,
@@ -8,5 +10,10 @@ public enum TransactionCategory {
     TRANSPORTE,
     EDUCACAO,
     SAUDE,
-    OUTROS
+    OUTROS;
+
+    @JsonCreator
+    public static TransactionCategory fromString(String value) {
+        return TransactionCategory.valueOf(value.toUpperCase());
+    }
 }
