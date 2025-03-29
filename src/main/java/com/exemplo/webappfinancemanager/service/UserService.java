@@ -28,13 +28,13 @@ public class UserService {
 	}
 
 	public ViewUserDTO save(RegisterUserDTO data) {
-		if (data.username() == null || data.username().isEmpty()) {
+		if (data.userName() == null || data.userName().isEmpty()) {
 		    throw new IllegalArgumentException("Username não pode ser nulo ou vazio.");
 		}
 
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 		
-		User newUser = new User(data.username(), encryptedPassword, data.email(), data.role(), data.imageUrl());
+		User newUser = new User(data.userName(), encryptedPassword, data.email(), data.role(), data.imageUrl());
 	
 		repository.save(newUser);
 		

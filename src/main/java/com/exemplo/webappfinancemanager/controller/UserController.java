@@ -25,7 +25,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterUserDTO data) {
-		if (this.service.findByUserName(data.username()) != null)
+		if (this.service.findByUserName(data.userName()) != null)
 			return ResponseEntity.badRequest().build();
 
 
