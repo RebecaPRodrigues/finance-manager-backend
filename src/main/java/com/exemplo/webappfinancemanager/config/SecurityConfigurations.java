@@ -1,4 +1,5 @@
 package com.exemplo.webappfinancemanager.config;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,30 +19,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
-    
+
     String[] PUBLIC_ENDPOINTS = {
-            "/auth", 
-            "/", 
-            "/h2-console/**", 
-            "/v3/api-docs/**",  
-            "/swagger-ui/**",   
-            "/swagger-ui.html"  // Página principal do Swagger
-        };
+        "/auth",
+        "/",
+        "/h2-console/**",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return  httpSecurity
+        return httpSecurity
             .cors().and()
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/auth").permitAll()
                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                // users
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                // transactions
-                .requestMatchers("/transactions/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ADMIN")
+                .requestMatchers("/transactions/**").hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -54,7 +52,7 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
