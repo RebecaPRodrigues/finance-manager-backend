@@ -48,7 +48,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
+    	String path = request.getServletPath();
         String method = request.getMethod();
 
         System.out.println("shouldNotFilter PATH = " + path + " | METHOD = " + method);
