@@ -28,25 +28,24 @@ public class SecurityConfigurations {
             "/swagger-ui.html"  // Página principal do Swagger
         };
 
-    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return  httpSecurity
-        		.cors().and()
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                		.requestMatchers("/auth").permitAll()
-                		.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                		// users
-                		.requestMatchers(HttpMethod.POST, "/users").permitAll()
-                		.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                        /// transactions
-                		.requestMatchers("/transactions").hasRole("USER")
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+            .cors().and()
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/auth").permitAll()
+                .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                // users
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                // transactions
+                .requestMatchers("/transactions/**").authenticated()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean
