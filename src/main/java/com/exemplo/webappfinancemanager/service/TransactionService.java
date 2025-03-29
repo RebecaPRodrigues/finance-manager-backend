@@ -1,6 +1,7 @@
 package com.exemplo.webappfinancemanager.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository repository;
-
+    
     @Autowired
     private UserRepository userRepository;
     
@@ -64,6 +65,15 @@ public class TransactionService {
         return repository.findById(id)
             .map(this::parseToDTO)
             .orElseThrow(() -> new IllegalArgumentException("Transaction Not Found"));
+    }
+    
+    public Optional<Transaction> findTransactionById(String id) {
+        return repository.findById(id); 
+
+    }
+    
+    public Optional<User> findUserById(String userId) {
+        return userRepository.findById(userId);
     }
 
     public void save(Transaction transaction) {

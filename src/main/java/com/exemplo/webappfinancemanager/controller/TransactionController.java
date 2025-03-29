@@ -79,11 +79,11 @@ public class TransactionController {
             @PathVariable String id, 
             @RequestBody RegisterTransactionDTO updatedTransactionDTO) {
 
-        Optional<Transaction> optionalTransaction = Optional.empty();
+        Optional<Transaction> optionalTransaction = service.findTransactionById(id);
         if (optionalTransaction.isPresent()) {
             Transaction transaction = optionalTransaction.get();
 
-            Optional<User> optionalUser = Optional.empty();
+            Optional<User> optionalUser = service.findUserById(updatedTransactionDTO.userId());
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
 
