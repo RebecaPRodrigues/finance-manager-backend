@@ -28,21 +28,21 @@ import com.exemplo.webappfinancemanager.service.TransactionService;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    @Autowired
-    private TransactionService service;
+	@Autowired
+	private TransactionService service;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getTransactionsByUser(@PathVariable String userId) {
-        List<ViewTransactionDTO> transactions = service.findByUserId(userId);
-        return ResponseEntity.ok(transactions);
-    }
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getTransactionsByUser(@PathVariable String userId) {
+		List<ViewTransactionDTO> transactions = service.findByUserId(userId);
+		return ResponseEntity.ok(transactions);
+	}
 
-    @PostMapping
+	@PostMapping
 //    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> createTransaction(@RequestBody RegisterTransactionDTO transaction) {
-    	ViewTransactionDTO savedTransaction = service.save(transaction);
-        return ResponseEntity.ok(savedTransaction);
-    }
+	public ResponseEntity<?> createTransaction(@RequestBody RegisterTransactionDTO transaction) {
+		ViewTransactionDTO savedTransaction = service.save(transaction);
+		return ResponseEntity.ok(savedTransaction);
+	}
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<?> updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction) {
@@ -63,52 +63,61 @@ public class TransactionController {
 //        }
 //    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable String id) {
-        var tranView = service.findById(id);
-        if (tranView != null) {
-            service.delete(tranView.id());
-            Map<String, Boolean> response = new HashMap<>();
-            response.put("success", true);
-            return ResponseEntity.ok().body(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> updateTransaction(
-            @PathVariable String id, 
-            @RequestBody RegisterTransactionDTO updatedTransactionDTO) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteTransaction(@PathVariable String id) {
+		var tranView = service.findById(id);
+		if (tranView != null) {
+			service.delete(tranView.id());
+			Map<String, Boolean> response = new HashMap<>();
+			response.put("success", true);
+			return ResponseEntity.ok().body(response);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
-        Optional<Transaction> optionalTransaction = service.findTransactionById(id);
-        if (optionalTransaction.isPresent()) {
-            Transaction transaction = optionalTransaction.get();
+	@PutMapping("/{id}")
+	public ResponseEntity<Map<String, Boolean>> updateTransaction(@PathVariable String id,
+			@RequestBody RegisterTransactionDTO updatedTransactionDTO) {
 
-            Optional<User> optionalUser = service.findUserById(updatedTransactionDTO.userId());
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
+		Optional<Transaction> optionalTransaction = service.findTransactionById(id);
+		if (optionalTransaction.isPresent()) {
+			Transaction transaction = optionalTransaction.get();
 
-                transaction.setUser(user);
-                transaction.setType(updatedTransactionDTO.type());
-                transaction.setAmount(updatedTransactionDTO.amount());
-                transaction.setTransactionWith(updatedTransactionDTO.transactionWith());
-                transaction.setDescription(updatedTransactionDTO.description());
-                transaction.setDate(updatedTransactionDTO.date());
-                transaction.setCategory(updatedTransactionDTO.category());
-                transaction.setPaymentMethod(updatedTransactionDTO.paymentMethod());
+			Optional<User> optionalUser = service.findUserById(updatedTransactionDTO.userId());
+			if (optionalUser.isPresent()) {
+				User user = optionalUser.get();
 
-                service.save(transaction);
+				transaction.setUser(user);
+				transaction.setType(updatedTransactionDTO.type());
+				transaction.setAmount(updatedTransactionDTO.amount());
+				transaction.setTransactionWith(updatedTransactionDTO.transactionWith());
+				transaction.setDescription(updatedTransactionDTO.description());
+				transaction.setDate(updatedTransactionDTO.date());
+				transaction.setCategory(updatedTransactionDTO.category());
+				transaction.setPaymentMethod(updatedTransactionDTO.paymentMethod());
 
-                Map<String, Boolean> response = new HashMap<>();
-                response.put("success", true);
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+				service.save(transaction);
+
+				Map<String, Boolean> response = new HashMap<>();
+				response.put("success", true);
+				return new ResponseEntity<>(response, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/transaction/{id}")
+	public ResponseEntity<?> getTransactionById(@PathVariable String id) {
+		var tranView = service.findById(id);
+		if (tranView != null) {
+			return ResponseEntity.ok(tranView);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 }
