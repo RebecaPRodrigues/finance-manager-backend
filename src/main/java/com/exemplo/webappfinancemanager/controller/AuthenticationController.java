@@ -37,6 +37,7 @@ public class AuthenticationController {
         var response = new LoginResponseDTO(
         	    user.getId(),
         	    user.getEmail(),
+        	    user.getUsername(),
         	    user.isAdmin() ? "ADMIN" : "USER",
         	    token
         	);
