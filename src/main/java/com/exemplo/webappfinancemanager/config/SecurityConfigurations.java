@@ -59,11 +59,14 @@ public class SecurityConfigurations {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOrigins(List.of(
-            "http://localhost:4200",
-            "https://frontend-hfxy502pf-rebecas-projects-ff7a02fe.vercel.app",
-            "https://frontend-nine-nu-77.vercel.app"
-        ));
+//        configuration.setAllowedOrigins(List.of(
+//            "http://localhost:4200",
+//            "https://frontend-hfxy502pf-rebecas-projects-ff7a02fe.vercel.app",
+//            "https://frontend-nine-nu-77.vercel.app"
+//        ));
+        
+        configuration.addAllowedOriginPattern("*");
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         configuration.setAllowedHeaders(List.of("*"));
