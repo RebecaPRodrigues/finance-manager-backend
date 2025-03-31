@@ -61,7 +61,8 @@ public class SecurityConfigurations {
         
         configuration.setAllowedOrigins(List.of(
             "http://localhost:4200",
-            "https://frontend-hfxy502pf-rebecas-projects-ff7a02fe.vercel.app"
+            "https://frontend-hfxy502pf-rebecas-projects-ff7a02fe.vercel.app",
+            "https://frontend-nine-nu-77.vercel.app"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
